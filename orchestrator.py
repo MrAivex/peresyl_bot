@@ -37,7 +37,7 @@ class Orchestrator:
         self.user_id: Optional[int] = None
 
     async def start(self) -> None:
-        self.user_id = self.twitter.get_user_id(self.target_username)
+        self.user_id = await self.twitter.get_user_id(self.target_username)
         logger.info(f"Мониторим @{self.target_username} (id={self.user_id})")
         logger.info("Бот запущен. Ожидаю новые твиты...")  # <-- добавьте эту строку
 
@@ -45,7 +45,7 @@ class Orchestrator:
             try:
                 logger.info("Проверяю новые твиты...")
                 last_id = self.state.get_last_id()
-                new_tweets = self.twitter.get_new_tweets(self.user_id, since_id=last_id)
+                new_tweets = await self.twitter.get_new_tweets(self.user_id, since_id=last_id)
 
                 for tweet in sorted(new_tweets, key=lambda t: t["id"]):
                     await self._process_tweet(tweet)
