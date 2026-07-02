@@ -35,7 +35,7 @@ tg_proxy: "https://Vqj4tj:G388Aj@168.81.65.165:8000"
 state_file: "state.json"
 
 # Интервал проверки новых твитов (в секундах)
-poll_interval_sec: 300          # 5 минут
+poll_interval_sec: 60         # 5 минут
 
 # Имя пользователя Twitter для мониторинга (без @)
 target_username: "audif1_"
