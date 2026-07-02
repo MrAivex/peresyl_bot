@@ -8,7 +8,7 @@ twitter_bearer_token: "AAAAAAAAAAAAAAAAAAAAALvG%2BQEAAAAApjYBQVKStruXD2hRD81ccwB
 # Прокси для локального тестирования (опционально)
 # Пример: "socks5://localhost:1080" (если поднят SSH-туннель)
 # На VPS с WARP/VPN оставьте null
-twitter_proxy: socks5://Vqj4tj:G388Aj@168.81.65.165:8000
+twitter_proxy: "https://Vqj4tj:G388Aj@168.81.65.165:8000"
 
 # ============================================================
 # Перевод через нейросеть
@@ -26,7 +26,7 @@ tg_channel_id: "@audi_f1_team_channel"   # с @ в начале
 
 # Прокси для Telegram (опционально)
 # На VPS с системным VPN/WARP оставьте null
-tg_proxy: socks5://Vqj4tj:G388Aj@168.81.65.165:8000
+tg_proxy: "https://Vqj4tj:G388Aj@168.81.65.165:8000"
 
 # ============================================================
 # Состояние и цель
