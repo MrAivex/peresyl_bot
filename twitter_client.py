@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
-NITTER_INSTANCE = "https://nitter.poast.org"  # если не работает, смените на "https://nitter.net"
+NITTER_INSTANCE = "https://nitter.woodland.cafe"  # если не работает, смените на "https://nitter.net"
 
 class TwitterClient:
     def __init__(self, bearer_token: str = None, proxy_url: Optional[str] = None):
