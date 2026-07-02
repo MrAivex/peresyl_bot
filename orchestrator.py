@@ -36,9 +36,11 @@ class Orchestrator:
     async def start(self) -> None:
         self.user_id = self.twitter.get_user_id(self.target_username)
         logger.info(f"Мониторим @{self.target_username} (id={self.user_id})")
+        logger.info("Бот запущен. Ожидаю новые твиты...")  # <-- добавьте эту строку
 
         while True:
             try:
+                logger.info("Проверяю новые твиты...")
                 last_id = self.state.get_last_id()
                 new_tweets = self.twitter.get_new_tweets(self.user_id, since_id=last_id)
 
@@ -49,7 +51,7 @@ class Orchestrator:
                 if new_tweets:
                     logger.info(f"Обработано {len(new_tweets)} твитов")
                 else:
-                    logger.debug("Новых твитов нет")
+                    logger.info("Новых твитов нет")
             except Exception as e:
                 logger.error(f"Ошибка в основном цикле: {e}", exc_info=True)
 
