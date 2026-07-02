@@ -8,6 +8,7 @@ logger = logging.getLogger(__name__)
 
 class TwitterClient:
     def __init__(self, bearer_token: str, proxy_url: Optional[str] = None):
+        logger.debug(f"Прокси для Twitter: {proxy_url}")
         self.bearer_token = bearer_token
         self.client = Client(bearer_token)
         if proxy_url:
