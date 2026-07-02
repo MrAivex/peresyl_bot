@@ -1,0 +1,41 @@
+# ============================================================
+# Twitter (X) API v2
+# ============================================================
+# Получить Bearer Token можно в Twitter Developer Portal
+# Бесплатный уровень даёт 1500 твитов/мес, вам хватит
+twitter_bearer_token: "AAAAAAAAAAAAAAAAAAAAALvG%2BQEAAAAApjYBQVKStruXD2hRD81ccwB764w%3DqjUxxeAMzIA8YSWwxPxETe9jBFh4sLzQlbheQrYsBzsduu7tCz"
+
+# Прокси для локального тестирования (опционально)
+# Пример: "socks5://localhost:1080" (если поднят SSH-туннель)
+# На VPS с WARP/VPN оставьте null
+twitter_proxy: socks5://Vqj4tj:G388Aj@168.81.65.165:8000
+
+# ============================================================
+# Перевод через нейросеть
+# ============================================================
+# Рекомендую DeepSeek (дешевле). Можно OpenAI (gpt-3.5-turbo)
+llm_api_key: "sk-Lye5RXdj4K89NS7XoTFDInpd4p8626ZfspLkbgkgxdDc8DAO"
+llm_model: "deepseek-v4-pro"          # или gpt-3.5-turbo
+llm_base_url: "https://neuroapi.host/v1"  # для OpenAI удалите эту строку
+
+# ============================================================
+# Telegram
+# ============================================================
+tg_bot_token: "8991546166:AAHzv4ZfN_8KhIVJgsR1A-PO2U0XksmQikI"
+tg_channel_id: "@audi_f1_team_channel"   # с @ в начале
+
+# Прокси для Telegram (опционально)
+# На VPS с системным VPN/WARP оставьте null
+tg_proxy: socks5://Vqj4tj:G388Aj@168.81.65.165:8000
+
+# ============================================================
+# Состояние и цель
+# ============================================================
+# Файл для хранения последнего обработанного твита
+state_file: "state.json"
+
+# Интервал проверки новых твитов (в секундах)
+poll_interval_sec: 300          # 5 минут
+
+# Имя пользователя Twitter для мониторинга (без @)
+target_username: "audif1_"
