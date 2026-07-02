@@ -6,7 +6,7 @@ import yaml
 from orchestrator import Orchestrator
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
 
