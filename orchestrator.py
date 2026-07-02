@@ -13,6 +13,9 @@ logger = logging.getLogger(__name__)
 
 class Orchestrator:
     def __init__(self, config: Dict):
+        if config.get("twitter_proxy"):
+            os.environ["HTTP_PROXY"] = config["twitter_proxy"]
+            os.environ["HTTPS_PROXY"] = config["twitter_proxy"]
         self.twitter = TwitterClient(
             bearer_token=config["twitter_bearer_token"],
             proxy_url=config.get("twitter_proxy"),
