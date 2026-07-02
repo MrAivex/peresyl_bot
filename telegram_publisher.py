@@ -12,7 +12,7 @@ class TelegramPublisher:
     def __init__(self, token: str, channel_id: str, proxy_url: Optional[str] = None):
         request = None
         if proxy_url:
-            request = HTTPXRequest(proxy_url=proxy_url)
+            request = HTTPXRequest(proxy=proxy_url)
         self.bot = Bot(token=token, request=request)
         self.channel_id = channel_id
 
