@@ -6,18 +6,29 @@ from tweepy import Client, Media
 
 logger = logging.getLogger(__name__)
 
+import logging
+from typing import Dict, List, Optional
+
+import requests
+from tweepy import Client, Media
+
+logger = logging.getLogger(__name__)
+
 class TwitterClient:
     def __init__(self, bearer_token: str, proxy_url: Optional[str] = None):
         self.bearer_token = bearer_token
-        # Создаём клиента без кастомной сессии
         self.client = Client(bearer_token)
-
-        # Если указан прокси — подменяем стандартную сессию на httpx с SOCKS5
         if proxy_url:
-            transport = httpx.HTTPTransport(proxy=httpx.Proxy(proxy_url))
-            custom_session = httpx.Client(transport=transport)
-            # Заменяем сессию в tweepy на нашу
-            self.client.session = custom_session
+            # Создаём requests.Session с SOCKS5 прокси
+            session = requests.Session()
+            session.proxies = {
+                "http": proxy_url,
+                "https": proxy_url,
+            }
+            self.client.session = session  # подменяем стандартную сессию
+
+    # остальные методы без изменений...
+    # (вставьте их сюда полностью, они есть у вас в репозитории)
 
     def get_user_id(self, username: str) -> int:
         user = self.client.get_user(username=username)
