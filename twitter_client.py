@@ -1,14 +1,6 @@
 import logging
 from typing import Dict, List, Optional
 
-import httpx
-from tweepy import Client, Media
-
-logger = logging.getLogger(__name__)
-
-import logging
-from typing import Dict, List, Optional
-
 import requests
 from tweepy import Client, Media
 
@@ -19,16 +11,12 @@ class TwitterClient:
         self.bearer_token = bearer_token
         self.client = Client(bearer_token)
         if proxy_url:
-            # Создаём requests.Session с SOCKS5 прокси
             session = requests.Session()
             session.proxies = {
                 "http": proxy_url,
                 "https": proxy_url,
             }
-            self.client.session = session  # подменяем стандартную сессию
-
-    # остальные методы без изменений...
-    # (вставьте их сюда полностью, они есть у вас в репозитории)
+            self.client.session = session
 
     def get_user_id(self, username: str) -> int:
         user = self.client.get_user(username=username)
