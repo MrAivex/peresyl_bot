@@ -39,3 +39,13 @@ poll_interval_sec: 60         # 5 минут
 
 # Имя пользователя Twitter для мониторинга (без @)
 target_username: "audif1_"
+
+
+source: "instagram"   # <-- измените здесь
+
+# Instagram (заполните, если source = instagram)
+instagram_login: "mr_aivex"
+instagram_password: "Btwin1564"
+instagram_proxy: "socks5://Vqj4tj:G388Aj@168.81.65.165:8000"  # или http://...
+instagram_session_file: "instagram_session.json"
+instagram_username: "audif1"
