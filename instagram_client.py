@@ -23,22 +23,27 @@ class InstagramClient:
     import os
 
     def login_user(self) -> bool:
-        """Выполняет вход и сохраняет сессию. Возвращает True при успехе."""
-        # Пробуем загрузить сессию, только если файл существует
+        """
+        Вход с обработкой challenge (SMS/email).
+        При первом входе с нового IP может потребоваться код подтверждения.
+        """
+        # Пробуем загрузить сессию, если файл существует
         if os.path.exists(self.session_file):
             try:
                 self.client.load_settings(self.session_file)
-                self.client.get_timeline_feed()  # проверка живой сессии
+                self.client.get_timeline_feed()  # проверка
                 logger.info("Instagram: сессия загружена")
                 return True
             except (LoginRequired, ClientError, Exception) as e:
                 logger.warning(f"Сессия недействительна: {e}. Будет выполнен вход по логину/паролю.")
-                # Удаляем повреждённый файл, чтобы не мешал
                 os.remove(self.session_file)
         else:
             logger.info("Файл сессии не найден, требуется первый вход.")
 
-        # Вход по логину и паролю
+        # Назначаем обработчики challenge ДО логина
+        self.client.challenge_code_handler = self._challenge_code_handler
+        self.client.change_password_handler = self._change_password_handler
+
         try:
             self.client.login(self.login, self.password)
             self.client.dump_settings(self.session_file)
@@ -47,6 +52,34 @@ class InstagramClient:
         except Exception as e:
             logger.error(f"Ошибка входа в Instagram: {e}")
             return False
+
+    def _challenge_code_handler(self, username, choice=None):
+        """
+        Вызывается, когда Instagram требует ввести код подтверждения.
+        choice – может быть списком доступных методов (0=SMS, 1=email).
+        """
+        print(f"\n[{username}] Требуется код подтверждения.")
+        if choice is not None:
+            # Instagram предлагает несколько способов
+            if isinstance(choice, list) and len(choice) > 0:
+                print("Доступные способы:")
+                for i, method in enumerate(choice):
+                    print(f"  {i} - {method}")
+                sel = input("Выберите номер способа: ")
+                return int(sel)
+            else:
+                # Если передан единственный вариант или не список
+                print(f"Выбран способ: {choice}")
+                return choice
+        else:
+            # Нет выбора – просто запрашиваем код
+            code = input("Введите код, отправленный на телефон/почту: ")
+            return code
+
+    def _change_password_handler(self, username, new_password):
+        """Обработчик смены пароля (если потребуется)."""
+        print(f"\n[{username}] Требуется сменить пароль.")
+        return input("Введите новый пароль: ")
 
     def get_user_id_from_username(self, username: str) -> Optional[str]:
         """Получает числовой ID пользователя по имени."""
