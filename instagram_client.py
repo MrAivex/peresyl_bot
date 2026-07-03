@@ -1,4 +1,5 @@
 import logging
+import os
 from typing import Dict, List, Optional
 
 from instagrapi import Client
@@ -19,24 +20,33 @@ class InstagramClient:
             # instagrapi принимает прокси в формате http://user:pass@host:port
             self.client.set_proxy(proxy)
 
-    def login_user(self) -> bool:
-        """Выполняет вход и сохраняет сессию. Возвращает True при успехе."""
+    import os
+
+def login_user(self) -> bool:
+    """Выполняет вход и сохраняет сессию. Возвращает True при успехе."""
+    # Пробуем загрузить сессию, только если файл существует
+    if os.path.exists(self.session_file):
         try:
-            # Пробуем загрузить сессию
             self.client.load_settings(self.session_file)
             self.client.get_timeline_feed()  # проверка живой сессии
             logger.info("Instagram: сессия загружена")
             return True
-        except (LoginRequired, ClientError):
-            logger.info("Instagram: сессия недействительна, требуется логин")
-            try:
-                self.client.login(self.login, self.password)
-                self.client.dump_settings(self.session_file)
-                logger.info("Instagram: вход выполнен, сессия сохранена")
-                return True
-            except Exception as e:
-                logger.error(f"Ошибка входа в Instagram: {e}")
-                return False
+        except (LoginRequired, ClientError, Exception) as e:
+            logger.warning(f"Сессия недействительна: {e}. Будет выполнен вход по логину/паролю.")
+            # Удаляем повреждённый файл, чтобы не мешал
+            os.remove(self.session_file)
+    else:
+        logger.info("Файл сессии не найден, требуется первый вход.")
+
+    # Вход по логину и паролю
+    try:
+        self.client.login(self.login, self.password)
+        self.client.dump_settings(self.session_file)
+        logger.info("Instagram: вход выполнен, сессия сохранена")
+        return True
+    except Exception as e:
+        logger.error(f"Ошибка входа в Instagram: {e}")
+        return False
 
     def get_user_id_from_username(self, username: str) -> Optional[str]:
         """Получает числовой ID пользователя по имени."""
